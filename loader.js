@@ -132,7 +132,7 @@ function loadCharacterBehaviourClickAttack()
         
         
     
-    },1000/4);
+    },250);
 
     LoaderEventManager.subscribe((name) => {
         if (name === CODE_MODE_SWITCH) {
@@ -143,22 +143,42 @@ function loadCharacterBehaviourClickAttack()
 
 function loadCharacterBehaviourAutoAttack()
 {
-    let intervalId = setInterval(function(){
-
-        if (character.mp < character.max_mp - 100) use_skill('regen_mp');
-        if (character.hp < character.max_hp - 50) use_skill('regen_hp');
+    let intervalId = setInterval(function(){   
         loot();
+
+        // If player is healable:
+        if ((character.mp < character.max_mp - 100) || (character.hp < character.max_hp - 50)) {
+            // If player is not being targeted by enemies: wait
+            if (get_nearest_monster({target:character}) === null) {
+                return;
+            }
+        }
     
         if(character.rip || is_moving(character)) return;
     
         var target = get_targeted_monster();
         if(!target)
         {
-            target = get_nearest_monster();
+            // Select the nearest monster attacking the player
+            target = get_nearest_monster({target:character});
+            if (!target) {
+                // If no monster attacks the player just pick any
+                target = get_nearest_monster();
+            }
+
+            // If target has been found
             if (target) {
-                change_target(target);
+                // If too far away: do nothing
+                if ((abs(target.x-character.x) > 200) || (abs(target.y-character.y) > 200)) {
+                    set_message("Too far away");
+                    return;
+                // Otherwise: change to target
+                } else {
+                    change_target(target);
+                }
+            // If no target has been found: do nothing
             } else {
-                set_message("No Monsters");
+                set_message("No Monsters nearby");
                 return;
             }
         }
@@ -173,11 +193,25 @@ function loadCharacterBehaviourAutoAttack()
             attack(target);
         }
     
-    },1000/4);
+    },250);
+
+    let healIntervalId = setInterval(function(){   
+        if (character.mp < character.max_mp - 100) {
+            if (!is_on_cooldown('regen_mp')) {
+                use_skill('regen_mp');
+            }
+        }
+        if (character.hp < character.max_hp - 50) {
+            if (!is_on_cooldown('regen_hp')) {
+                use_skill('regen_hp');
+            }
+        }
+    },1750);
 
     LoaderEventManager.subscribe((name) => {
         if (name === CODE_MODE_SWITCH) {
             clearInterval(intervalId);
+            clearInterval(healIntervalId);
         }
     });
 }

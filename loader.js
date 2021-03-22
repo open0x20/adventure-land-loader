@@ -71,7 +71,7 @@ function switchCodeMode()
     // Load the new source code
     loadSpecificCode(newMode);
 
-    log("[EM]: " + newMode);
+    log("[CM]: " + newMode);
     localStorage.setItem(CODE_MODE, newMode);
 }
 map_key("P","snippet","switchCodeMode();");

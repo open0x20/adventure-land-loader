@@ -165,8 +165,8 @@ function loadCharacterBehaviourAutoAttack()
         
         if(!is_in_range(target)) {
             move(
-                character.x+(target.x-character.x)/8,
-                character.y+(target.y-character.y)/8
+                character.x+(target.x-character.x)/2,
+                character.y+(target.y-character.y)/2
                 );
         } else if(can_attack(target)) {
             set_message("Auto-Attacking");

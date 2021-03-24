@@ -4,7 +4,7 @@
 
 // Code Mode Identifiers
 const CODE_MODE = "CODE_MODE";                              // localStorage Identifier
-const CODE_MODE_SWITCH = "CODE_MODE_SWITCH";                // LoaderEventManager Event Identifier
+const CODE_MODE_SWITCH = "CODE_MODE_SWITCH";                // Loader Event Identifier
 
 // Code Modes
 const CODE_MODE_NONE = "CODE_MODE_NONE";
@@ -16,31 +16,62 @@ const CODE_MODE_REMOTE = "CODE_MODE_REMOTE";
 // Text Constants
 const EXCEPTION_CODE_MODE_SWITCH_FAILED = "Failed to switch code mode!";
 
-const LoaderEventManager = {
-    subscriber: [],
+const Loader = {
+    /* Event Management Stuff */
+    subscribers: [],
     subscribe: function(callback) {
-        this.subscriber.push(callback);
+        this.subscribers.push(callback);
     },
     unsubscribe: function(callback) {
-        this.subscriber.remove(callback);
+        this.subscribers.remove(callback);
     },
     unsubscribeAll: function() {
-        this.subscriber = [];
+        this.subscribers = [];
     },
     triggerEvent: function(name) {
-        this.subscriber.forEach(callback => {
+        this.subscribers.forEach(callback => {
             callback(name)
         });
+    },
+
+    /* Script Helper Stuff */
+    globalIntervalIds: [],
+    globalCharacterEventIds: [],
+    appendIntervalId: function(id) {
+        this.globalIntervalIds.push(id);
+    },
+    appendCharacterEventId: function(id) {
+        this.globalCharacterEventIds.push(id);
+    },
+    clearGlobalIntervals: function(id) {
+        this.globalIntervalIds.forEach((id) => {
+            clearInterval(id);
+        });
+        this.globalIntervalIds = [];
+    },
+    clearGlobalCharacterEvents: function() {
+        this.globalCharacterEventIds.forEach((id) => {
+            var listenerIdx = character.listeners.indexOf(character.listeners.find(function(curr) {
+                if (curr.id === id)
+                    return true;
+            }));
+            character.listeners.splice(listenerIdx);
+        });
+        this.globalCharacterEventIds = [];
     }
 };
 
 function switchCodeMode(mode)
 {
     // Notify all event subscribers about the code mode switch
-    LoaderEventManager.triggerEvent(CODE_MODE_SWITCH);
+    Loader.triggerEvent(CODE_MODE_SWITCH);
+
+    // Clear all globally registered intervals/events
+    Loader.clearGlobalIntervals();
+    Loader.clearGlobalCharacterEvents();
 
     // Discard all old event subscribers
-    LoaderEventManager.unsubscribeAll();
+    Loader.unsubscribeAll();
 
     // Deselect current target
     change_target(null);
@@ -277,10 +308,8 @@ function loadCharacterBehaviourClickAttack()
                 attack(target);
             }
         }
-        
-        
-    
     },250);
+    Loader.appendIntervalId(intervalId);
 
     let healIntervalId = setInterval(function(){   
         if (character.mp < character.max_mp - 100) {
@@ -294,13 +323,7 @@ function loadCharacterBehaviourClickAttack()
             }
         }
     },1750);
-
-    LoaderEventManager.subscribe((name) => {
-        if (name === CODE_MODE_SWITCH) {
-            clearInterval(intervalId);
-            clearInterval(healIntervalId);
-        }
-    });
+    Loader.appendIntervalId(healIntervalId);
 }
 
 function loadCharacterBehaviourAutoAttack()
@@ -356,6 +379,7 @@ function loadCharacterBehaviourAutoAttack()
         }
     
     },250);
+    Loader.appendIntervalId(intervalId);
 
     let healIntervalId = setInterval(function(){   
         if (character.mp < character.max_mp - 100) {
@@ -369,13 +393,7 @@ function loadCharacterBehaviourAutoAttack()
             }
         }
     },1750);
-
-    LoaderEventManager.subscribe((name) => {
-        if (name === CODE_MODE_SWITCH) {
-            clearInterval(intervalId);
-            clearInterval(healIntervalId);
-        }
-    });
+    Loader.appendIntervalId(healIntervalId);
 }
 
 /**

@@ -5,11 +5,17 @@ class AutoAttackBehaviour
 {
     engage()
     {
+        let allowed_monsters = localStorage.getItem('loader_allowed_monsters') || null;
+
+        if (allowed_monsters) {
+            allowed_monsters = allowed_monsters.split(',');
+        }
+
         loader_loops_targeting_loop({
             interval: 1000,
             onTargetFoundCallback: loader_base_attack_chain,
             targetingArgs: {
-                monsterTypeLimit: ['goo', 'bee'],
+                monsterTypeLimit: allowed_monsters,
                 rangeLimit: 200
             }
         });

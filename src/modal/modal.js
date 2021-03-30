@@ -64,14 +64,29 @@ map_key("F8",{name:"pure_eval",code:`(() => {
     loaderDialogButtonSetLocal.innerHTML = "SET";
     loaderDialogButtonSetLocal.className = "colorgray gamebutton whitehover";
     loaderDialogButtonSetLocal.style = "height:0px;border:none;margin-left:16px;";
-    loaderDialogButtonSetLocal.setAttribute("onclick", "localStorage.setItem('loader_local_import_url', document.getElementById('loader_local_import_input').value) || code_eval('switchCodeMode(CODE_MODE_LOCAL);')");
+    loaderDialogButtonSetLocal.setAttribute("onclick", "localStorage.setItem('loader_local_import_url', document.getElementById('loader_local_import_input').value)");
 
     /* LOADER dialog button: SET Remote */
     let loaderDialogButtonSetRemote = document.createElement("div");
     loaderDialogButtonSetRemote.innerHTML = "SET";
     loaderDialogButtonSetRemote.className = "colorgray gamebutton whitehover";
     loaderDialogButtonSetRemote.style = "height:0px;border:none;margin-left:16px;";
-    loaderDialogButtonSetRemote.setAttribute("onclick", "localStorage.setItem('loader_remote_import_url', document.getElementById('loader_remote_import_input').value) || code_eval('switchCodeMode(CODE_MODE_REMOTE);')");
+    loaderDialogButtonSetRemote.setAttribute("onclick", "localStorage.setItem('loader_remote_import_url', document.getElementById('loader_remote_import_input').value)");
+
+    /* LOADER dialog button: SET Monsters */
+    let loaderDialogButtonSetMonsters = document.createElement("div");
+    loaderDialogButtonSetMonsters.innerHTML = "SET";
+    loaderDialogButtonSetMonsters.className = "colorgray gamebutton whitehover";
+    loaderDialogButtonSetMonsters.style = "height:0px;border:none;margin-left:16px;";
+    loaderDialogButtonSetMonsters.setAttribute("onclick", "localStorage.setItem('loader_allowed_monsters', document.getElementById('loader_allowed_monsters_input').value)");
+
+    /* LOADER dialog button: SET Merchants */
+    let loaderDialogButtonSetMerchants = document.createElement("div");
+    loaderDialogButtonSetMerchants.innerHTML = "SET";
+    loaderDialogButtonSetMerchants.className = "colorgray gamebutton whitehover";
+    loaderDialogButtonSetMerchants.style = "height:0px;border:none;margin-left:16px;";
+    loaderDialogButtonSetMerchants.setAttribute("onclick", "localStorage.setItem('loader_merchant', document.getElementById('loader_merchant_input').value)");
+
 
     /* LOADER dialog button: Add Merchant Buttons */
     let loaderDialogButtonAddMerchantButton = document.createElement("div");
@@ -122,7 +137,7 @@ map_key("F8",{name:"pure_eval",code:`(() => {
     loader_dialog_local_input_html += "<p style='font-size:24px;margin-bottom:2px;margin-top:2px;'>Import local script (file/http/https):</p>";
     loader_dialog_local_input_html += "<div style='display:inline-block;background:black;color:gray;padding:2px;border:4px solid gray;'>";
     loader_dialog_local_input_html += "<input id='loader_local_import_input' class='codeui' placeholder='file://...' style='font-family:Pixel;color:white;background:transparent;border:none;font-size:28px;margin-left:4px;padding:0px;width:500px;height:44px'/>";
-    loader_dialog_local_input_html += loaderDialogButtonSetLocal.outerHTML;
+    loader_dialog_local_input_html += loaderDialogButtonSetMonsters.outerHTML;
     loader_dialog_local_input_html += "</div>";
     loader_dialog_local_input_html += "</div>";
     loaderDialog.innerHTML += loader_dialog_local_input_html;
@@ -132,10 +147,34 @@ map_key("F8",{name:"pure_eval",code:`(() => {
     loader_dialog_remote_input_html += "<p style='font-size:24px;margin-bottom:2px;margin-top:2px;'>Import remote script (https):</p>";
     loader_dialog_remote_input_html += "<div style='display:inline-block;background:black;color:gray;padding:2px;border:4px solid gray;'>";
     loader_dialog_remote_input_html += "<input id='loader_remote_import_input' class='codeui' placeholder='https://...' style='font-family:Pixel;color:white;background:transparent;border:none;font-size:28px;margin-left:4px;padding:0px;width:500px;height:44px'/>";
-    loader_dialog_remote_input_html += loaderDialogButtonSetRemote.outerHTML;
+    loader_dialog_remote_input_html += loaderDialogButtonSetMerchants.outerHTML;
     loader_dialog_remote_input_html += "</div>";
     loader_dialog_remote_input_html += "</div>";
     loaderDialog.innerHTML += loader_dialog_remote_input_html;
+
+    /* TITLE: Variables */
+    loaderDialog.innerHTML += "<h2 style='margin:0px;margin-top:4px;'>Variables</h2>";
+    loaderDialog.innerHTML += "<hr style='margin-top:0px;'>";
+
+    let loader_dialog_monsters_input_html = "";
+    loader_dialog_monsters_input_html += "<div style=''>";
+    loader_dialog_monsters_input_html += "<p style='font-size:24px;margin-bottom:2px;margin-top:2px;'>Allowed monsters for auto-attacking (separated by comma):</p>";
+    loader_dialog_monsters_input_html += "<div style='display:inline-block;background:black;color:gray;padding:2px;border:4px solid gray;'>";
+    loader_dialog_monsters_input_html += "<input id='loader_allowed_monsters_input' class='codeui' placeholder='bee,arcticbee' style='font-family:Pixel;color:white;background:transparent;border:none;font-size:28px;margin-left:4px;padding:0px;width:500px;height:44px'/>";
+    loader_dialog_monsters_input_html += loaderDialogButtonSetMonsters.outerHTML;
+    loader_dialog_monsters_input_html += "</div>";
+    loader_dialog_monsters_input_html += "</div>";
+    loaderDialog.innerHTML += loader_dialog_monsters_input_html;
+
+    let loader_dialog_merchants_input_html = "";
+    loader_dialog_merchants_input_html += "<div style=''>";
+    loader_dialog_merchants_input_html += "<p style='font-size:24px;margin-bottom:2px;margin-top:2px;'>Name of your merchant:</p>";
+    loader_dialog_merchants_input_html += "<div style='display:inline-block;background:black;color:gray;padding:2px;border:4px solid gray;'>";
+    loader_dialog_merchants_input_html += "<input id='loader_merchant_input' class='codeui' placeholder='TacoMerchant' style='font-family:Pixel;color:white;background:transparent;border:none;font-size:28px;margin-left:4px;padding:0px;width:500px;height:44px'/>";
+    loader_dialog_merchants_input_html += loaderDialogButtonSetMerchants.outerHTML;
+    loader_dialog_merchants_input_html += "</div>";
+    loader_dialog_merchants_input_html += "</div>";
+    loaderDialog.innerHTML += loader_dialog_merchants_input_html;
 
     /* TITLE: Additional */
     loaderDialog.innerHTML += "<h2 style='margin:0px;'>Additional</h2>";
@@ -154,7 +193,7 @@ map_key("F8",{name:"pure_eval",code:`(() => {
     loaderMenuButton.id = "loader_menu_button";
     loaderMenuButton.className = "gamebutton promode";
     loaderMenuButton.innerHTML = "LOADER";
-    loaderMenuButton.setAttribute("onclick", "show_modal(document.loaderDialog); (document.getElementById('loader_local_import_input').value = localStorage.getItem('loader_local_import_url')); (document.getElementById('loader_remote_import_input').value = localStorage.getItem('loader_remote_import_url'))");
+    loaderMenuButton.setAttribute("onclick", "show_modal(document.loaderDialog); (document.getElementById('loader_local_import_input').value = localStorage.getItem('loader_local_import_url')); (document.getElementById('loader_remote_import_input').value = localStorage.getItem('loader_remote_import_url')); (document.getElementById('loader_allowed_monsters_input').value = localStorage.getItem('loader_allowed_monsters')); (document.getElementById('loader_merchant_input').value = localStorage.getItem('loader_merchant'));");
     gamebuttons.insertBefore(loaderMenuButton, gamebuttons.childNodes[2]);
 
     code_eval("log('Reloaded LOADER')");

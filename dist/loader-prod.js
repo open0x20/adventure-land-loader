@@ -65,14 +65,29 @@ map_key("F8",{name:"pure_eval",code:`(() => {
     loaderDialogButtonSetLocal.innerHTML = "SET";
     loaderDialogButtonSetLocal.className = "colorgray gamebutton whitehover";
     loaderDialogButtonSetLocal.style = "height:0px;border:none;margin-left:16px;";
-    loaderDialogButtonSetLocal.setAttribute("onclick", "localStorage.setItem('loader_local_import_url', document.getElementById('loader_local_import_input').value) || code_eval('switchCodeMode(CODE_MODE_LOCAL);')");
+    loaderDialogButtonSetLocal.setAttribute("onclick", "localStorage.setItem('loader_local_import_url', document.getElementById('loader_local_import_input').value)");
 
     /* LOADER dialog button: SET Remote */
     let loaderDialogButtonSetRemote = document.createElement("div");
     loaderDialogButtonSetRemote.innerHTML = "SET";
     loaderDialogButtonSetRemote.className = "colorgray gamebutton whitehover";
     loaderDialogButtonSetRemote.style = "height:0px;border:none;margin-left:16px;";
-    loaderDialogButtonSetRemote.setAttribute("onclick", "localStorage.setItem('loader_remote_import_url', document.getElementById('loader_remote_import_input').value) || code_eval('switchCodeMode(CODE_MODE_REMOTE);')");
+    loaderDialogButtonSetRemote.setAttribute("onclick", "localStorage.setItem('loader_remote_import_url', document.getElementById('loader_remote_import_input').value)");
+
+    /* LOADER dialog button: SET Monsters */
+    let loaderDialogButtonSetMonsters = document.createElement("div");
+    loaderDialogButtonSetMonsters.innerHTML = "SET";
+    loaderDialogButtonSetMonsters.className = "colorgray gamebutton whitehover";
+    loaderDialogButtonSetMonsters.style = "height:0px;border:none;margin-left:16px;";
+    loaderDialogButtonSetMonsters.setAttribute("onclick", "localStorage.setItem('loader_allowed_monsters', document.getElementById('loader_allowed_monsters_input').value)");
+
+    /* LOADER dialog button: SET Merchants */
+    let loaderDialogButtonSetMerchants = document.createElement("div");
+    loaderDialogButtonSetMerchants.innerHTML = "SET";
+    loaderDialogButtonSetMerchants.className = "colorgray gamebutton whitehover";
+    loaderDialogButtonSetMerchants.style = "height:0px;border:none;margin-left:16px;";
+    loaderDialogButtonSetMerchants.setAttribute("onclick", "localStorage.setItem('loader_merchant', document.getElementById('loader_merchant_input').value)");
+
 
     /* LOADER dialog button: Add Merchant Buttons */
     let loaderDialogButtonAddMerchantButton = document.createElement("div");
@@ -123,7 +138,7 @@ map_key("F8",{name:"pure_eval",code:`(() => {
     loader_dialog_local_input_html += "<p style='font-size:24px;margin-bottom:2px;margin-top:2px;'>Import local script (file/http/https):</p>";
     loader_dialog_local_input_html += "<div style='display:inline-block;background:black;color:gray;padding:2px;border:4px solid gray;'>";
     loader_dialog_local_input_html += "<input id='loader_local_import_input' class='codeui' placeholder='file://...' style='font-family:Pixel;color:white;background:transparent;border:none;font-size:28px;margin-left:4px;padding:0px;width:500px;height:44px'/>";
-    loader_dialog_local_input_html += loaderDialogButtonSetLocal.outerHTML;
+    loader_dialog_local_input_html += loaderDialogButtonSetMonsters.outerHTML;
     loader_dialog_local_input_html += "</div>";
     loader_dialog_local_input_html += "</div>";
     loaderDialog.innerHTML += loader_dialog_local_input_html;
@@ -133,10 +148,34 @@ map_key("F8",{name:"pure_eval",code:`(() => {
     loader_dialog_remote_input_html += "<p style='font-size:24px;margin-bottom:2px;margin-top:2px;'>Import remote script (https):</p>";
     loader_dialog_remote_input_html += "<div style='display:inline-block;background:black;color:gray;padding:2px;border:4px solid gray;'>";
     loader_dialog_remote_input_html += "<input id='loader_remote_import_input' class='codeui' placeholder='https://...' style='font-family:Pixel;color:white;background:transparent;border:none;font-size:28px;margin-left:4px;padding:0px;width:500px;height:44px'/>";
-    loader_dialog_remote_input_html += loaderDialogButtonSetRemote.outerHTML;
+    loader_dialog_remote_input_html += loaderDialogButtonSetMerchants.outerHTML;
     loader_dialog_remote_input_html += "</div>";
     loader_dialog_remote_input_html += "</div>";
     loaderDialog.innerHTML += loader_dialog_remote_input_html;
+
+    /* TITLE: Variables */
+    loaderDialog.innerHTML += "<h2 style='margin:0px;margin-top:4px;'>Variables</h2>";
+    loaderDialog.innerHTML += "<hr style='margin-top:0px;'>";
+
+    let loader_dialog_monsters_input_html = "";
+    loader_dialog_monsters_input_html += "<div style=''>";
+    loader_dialog_monsters_input_html += "<p style='font-size:24px;margin-bottom:2px;margin-top:2px;'>Allowed monsters for auto-attacking (separated by comma):</p>";
+    loader_dialog_monsters_input_html += "<div style='display:inline-block;background:black;color:gray;padding:2px;border:4px solid gray;'>";
+    loader_dialog_monsters_input_html += "<input id='loader_allowed_monsters_input' class='codeui' placeholder='bee,arcticbee' style='font-family:Pixel;color:white;background:transparent;border:none;font-size:28px;margin-left:4px;padding:0px;width:500px;height:44px'/>";
+    loader_dialog_monsters_input_html += loaderDialogButtonSetMonsters.outerHTML;
+    loader_dialog_monsters_input_html += "</div>";
+    loader_dialog_monsters_input_html += "</div>";
+    loaderDialog.innerHTML += loader_dialog_monsters_input_html;
+
+    let loader_dialog_merchants_input_html = "";
+    loader_dialog_merchants_input_html += "<div style=''>";
+    loader_dialog_merchants_input_html += "<p style='font-size:24px;margin-bottom:2px;margin-top:2px;'>Name of your merchant:</p>";
+    loader_dialog_merchants_input_html += "<div style='display:inline-block;background:black;color:gray;padding:2px;border:4px solid gray;'>";
+    loader_dialog_merchants_input_html += "<input id='loader_merchant_input' class='codeui' placeholder='TacoMerchant' style='font-family:Pixel;color:white;background:transparent;border:none;font-size:28px;margin-left:4px;padding:0px;width:500px;height:44px'/>";
+    loader_dialog_merchants_input_html += loaderDialogButtonSetMerchants.outerHTML;
+    loader_dialog_merchants_input_html += "</div>";
+    loader_dialog_merchants_input_html += "</div>";
+    loaderDialog.innerHTML += loader_dialog_merchants_input_html;
 
     /* TITLE: Additional */
     loaderDialog.innerHTML += "<h2 style='margin:0px;'>Additional</h2>";
@@ -155,15 +194,23 @@ map_key("F8",{name:"pure_eval",code:`(() => {
     loaderMenuButton.id = "loader_menu_button";
     loaderMenuButton.className = "gamebutton promode";
     loaderMenuButton.innerHTML = "LOADER";
-    loaderMenuButton.setAttribute("onclick", "show_modal(document.loaderDialog); (document.getElementById('loader_local_import_input').value = localStorage.getItem('loader_local_import_url')); (document.getElementById('loader_remote_import_input').value = localStorage.getItem('loader_remote_import_url'))");
+    loaderMenuButton.setAttribute("onclick", "show_modal(document.loaderDialog); (document.getElementById('loader_local_import_input').value = localStorage.getItem('loader_local_import_url')); (document.getElementById('loader_remote_import_input').value = localStorage.getItem('loader_remote_import_url')); (document.getElementById('loader_allowed_monsters_input').value = localStorage.getItem('loader_allowed_monsters')); (document.getElementById('loader_merchant_input').value = localStorage.getItem('loader_merchant'));");
     gamebuttons.insertBefore(loaderMenuButton, gamebuttons.childNodes[2]);
 
     code_eval("log('Reloaded LOADER')");
 })();
-`,skin:G.skills.snippet.skin,keycode:119});function addMerchantButtons()
+`,skin:G.skills.snippet.skin,keycode:119});
+function addMerchantButtons()
 {
     add_bottom_button('giveToMerchant1', 'Give 1', () => {
-        send_item('TacoMerchant', 41, 1);
+        // Check if a merchant has been set
+        let merchant = localStorage.getItem('loader_merchant');
+        if (!merchant) {
+            log('No merchant has been set!');
+            return;
+        }
+
+        send_item(merchant, 41, 1);
         setTimeout(() => {
             if (character.items[41] === null) {
                 swap(40, 41);
@@ -173,10 +220,17 @@ map_key("F8",{name:"pure_eval",code:`(() => {
                 swap(36, 37);
                 swap(35, 36);
             }
-        }, 150);
+        }, 250);
     });
     add_bottom_button('giveToMerchant10', 'Give 10', () => {
-        send_item('TacoMerchant', 41, 10);
+        // Check if a merchant has been set
+        let merchant = localStorage.getItem('loader_merchant');
+        if (!merchant) {
+            log('No merchant has been set!');
+            return;
+        }
+
+        send_item(merchant, 41, 10);
         if (character.items[41] !== null) {
             setTimeout(() => {
                 if (character.items[41] === null) {
@@ -187,7 +241,7 @@ map_key("F8",{name:"pure_eval",code:`(() => {
                     swap(36, 37);
                     swap(35, 36);
                 }
-            }, 150);
+            }, 250);
         }
     });
 }/**
@@ -217,7 +271,7 @@ function loader_base_attack_chain(targetId)
             attack(target).then( 
                 function(data) {
                     // attack succeeded
-                    reduce_cooldown('attack', character.ping*0.95);
+                    reduce_cooldown('attack', character.ping * 0.95);
                 },
                 function(data) {
                     // attack failed
@@ -234,21 +288,73 @@ function loader_base_attack_chain(targetId)
     setTimeout(function() {
         loader_base_attack_chain(targetId);
     }, timeout);
-}function loader_base_calc_remaining_range_distance(cx, cy, tx, ty, range)
+}/**
+ * Calculates the remaining x and y distance needed to be in the specified range. Currently
+ * doesn't care about character height and width.
+ * Returns the distance for each coordinate (can be negative).
+ * 
+ * @param {Number} cx Characters x coordinate
+ * @param {Number} cy Characters y coordinate
+ * @param {Number} tx Targets x coordinate
+ * @param {Number} ty Targets y coordinate
+ * @param {Number} range Characters range
+ * @returns 
+ */
+function loader_base_calc_remaining_range_distance(cx, cy, tx, ty, range)
 {
     let distance_full = Math.sqrt(Math.pow(cx - tx,2) + Math.pow(cy - ty,2))
     let distance_needed = distance_full - range;
+
+    /*
+    // Old ineffective calculation
     let alpha = Math.asin(abs((ty - cy)) / distance_full) * 180 / Math.PI;
     let xoff = (distance_needed * Math.sin((180 - 90 - alpha) * Math.PI / 180)) / Math.sin(90 * Math.PI / 180);
     let yoff = Math.sqrt(Math.pow(xoff, 2) - 2 * xoff * distance_needed * Math.cos(alpha * Math.PI / 180) + Math.pow(distance_needed, 2));
+    */
 
-    if (tx < cx) xoff *= -1;
-    if (ty < cy) yoff *= -1;
+    let xoff = (distance_needed / distance_full) * (tx - cx);
+    let yoff = (distance_needed / distance_full) * (ty - cy);
+
+    //if (tx < cx) xoff *= -1;
+    //if (ty < cy) yoff *= -1;
 
     return {
         xoff:xoff,
         yoff:yoff
     };
+}
+/**
+ * Returns a target matching the specified criteria or null if none could be found.
+ * 
+ * args:
+ *  - monsterTypeLimit: An array of string (e.g.: ["goo", "bee"]) that limits the targeted monsters to given type
+ *  - rangeLimit: Search range limit in pixels (default: 200)
+ */
+function loader_base_target_nearest_monster(args)
+{
+    let rangeLimit = (args.rangeLimit ? args.rangeLimit : 200);
+
+    // Select the nearest monster attacking the player
+    let target = get_nearest_monster({target:character});
+
+    // If no monster attacks the player just pick the closest or the closest of type monsterTypeLimit
+    if (!target) {
+        if (args.monsterTypeLimit) {
+            for (let idx = 0; idx < args.monsterTypeLimit.length; idx++) {
+                target = get_nearest_monster({type:args.monsterTypeLimit[idx]});
+                if (target) break;
+            }
+        } else {
+            target = get_nearest_monster();
+        }
+    }
+
+    // Check if target is close enough
+    if (distance(character, target) > rangeLimit) {
+        return;
+    }
+
+    return (target ? target : null);
 }/**
  * args:
  *  - interval: interval in milliseconds (default: 1000)
@@ -287,38 +393,21 @@ function loader_loops_healing_loop(args)
  * args:
  *  - interval: interval in milliseconds (default: 1000)
  *  - onTargetFoundCallback: A callback that will be called when a new target has been found (with arguments: target.id)
- *  - monsterTypeLimit: A string (e.g.: "goo") that limits the targeted monsters to given type
- *  - rangeLimit: Search range limit in pixels (default: 200)
+ *  - targetingArgs: (see loader_base_target_nearest_monster)
  */
 function loader_loops_targeting_loop(args)
 {
     let interval = (args.interval ? args.interval : 1000);
-    let rangeLimit = (args.rangeLimit ? args.rangeLimit : 200);
+    let targetingArgs = (args.targetingArgs ? args.targetingArgs : {});
 
     let id = setInterval(function() {
         // If we already have a selected target: skip this interval
         if (get_targeted_monster()) return;
 
-        // Select the nearest monster attacking the player
-        let target = get_nearest_monster({target:character});
-
-
-        // If no monster attacks the player just pick the closest or the closest of type monsterNameFilter
-        if (!target) {
-            if (args.monsterTypeLimit) {
-                target = get_nearest_monster({type:args.monsterTypeLimit});
-            } else {
-                target = get_nearest_monster();
-            }
-        }
+        let target = loader_base_target_nearest_monster(targetingArgs);
 
         // If we found a suitable target
         if (target) {
-            // If target is too far away: skip this interval
-            if ((abs(target.x-character.x) > rangeLimit) || (abs(target.y-character.y) > rangeLimit)) {
-                return;
-            }
-
             change_target(target);
 
             // If a callback has been supplied: call it
@@ -358,14 +447,50 @@ function loader_loops_move_into_range(args)
         }
     }, interval);
     Loader.appendIntervalId(id);
-}class AutoAttackBehaviour
+}/**
+ * Simple auto- targeting and attacking behaviour.
+ */
+class AutoAttackBehaviour
 {
     engage()
     {
+        let allowed_monsters = localStorage.getItem('loader_allowed_monsters') || null;
+
+        if (allowed_monsters) {
+            allowed_monsters = allowed_monsters.split(',');
+        }
+
         loader_loops_targeting_loop({
             interval: 1000,
             onTargetFoundCallback: loader_base_attack_chain,
-            monsterTypeLimit: 'goo',
+            targetingArgs: {
+                monsterTypeLimit: allowed_monsters,
+                rangeLimit: 200
+            }
+        });
+
+        loader_loops_healing_loop({
+            interval: 500
+        });
+
+        loader_loops_move_into_range({
+            interval: 200
+        });
+    }
+}class OnClickAttackBehaviour
+{
+    engage()
+    {
+        let allowed_monsters = localStorage.getItem('loader_allowed_monsters') || null;
+
+        if (allowed_monsters) {
+            allowed_monsters = allowed_monsters.split(',');
+        }
+
+        loader_loops_targeting_loop({
+            interval: 1000,
+            onTargetFoundCallback: loader_base_attack_chain,
+            monsterTypeLimit: allowed_monsters,
             rangeLimit: 200
         });
 
@@ -460,7 +585,7 @@ function switchCodeMode(mode)
     // Load new source
     loadSpecificCode(mode);
 
-    log("[CM]: " + mode);
+    log("[LD]: " + mode);
     localStorage.setItem(CODE_MODE, mode);
 }
 
@@ -476,7 +601,7 @@ function loadSpecificCode(mode)
             break;
         case CODE_MODE_CLICK_ATTACK:
             // Switch to click-attack behaviour
-            loadCharacterBehaviourClickAttack();
+            (new OnClickAttackBehaviour()).engage();
             break;
         case CODE_MODE_AUTO_ATTACK:
             // Switch to auto-attacking behaviour

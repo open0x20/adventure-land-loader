@@ -7,6 +7,7 @@ loader-prod.js:
 	cat ./src/modal/merchant.js >> ./dist/$(OFILE)
 	cat ./src/base/attack_chain.js >> ./dist/$(OFILE)
 	cat ./src/base/calc.js >> ./dist/$(OFILE)
+	cat ./src/base/target_nearest_monster.js >> ./dist/$(OFILE)
 	cat ./src/loops/healing_loop.js >> ./dist/$(OFILE)
 	cat ./src/loops/targeting_loop.js >> ./dist/$(OFILE)
 	cat ./src/loops/move_into_range_loop.js >> ./dist/$(OFILE)

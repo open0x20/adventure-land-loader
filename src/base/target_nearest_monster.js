@@ -24,9 +24,13 @@ function loader_base_target_nearest_monster(args)
         }
     }
 
+    if (!target) {
+        return null;
+    }
+
     // Check if target is close enough
-    if (distance(character, target) > rangeLimit) {
-        return;
+    if (distance(parent.character, target) > rangeLimit) {
+        return null;
     }
 
     return (target ? target : null);

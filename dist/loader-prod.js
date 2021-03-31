@@ -244,7 +244,8 @@ function addMerchantButtons()
             }, 250);
         }
     });
-}/**
+}
+/**
  * Chains attacks with setTimeout() and the attack cooldown.
  * The chain stops after a new target or no target has been selected.
  */
@@ -288,7 +289,8 @@ function loader_base_attack_chain(targetId)
     setTimeout(function() {
         loader_base_attack_chain(targetId);
     }, timeout);
-}/**
+}
+/**
  * Calculates the remaining x and y distance needed to be in the specified range. Currently
  * doesn't care about character height and width.
  * Returns the distance for each coordinate (can be negative).
@@ -349,13 +351,18 @@ function loader_base_target_nearest_monster(args)
         }
     }
 
+    if (!target) {
+        return null;
+    }
+
     // Check if target is close enough
-    if (distance(character, target) > rangeLimit) {
-        return;
+    if (distance(parent.character, target) > rangeLimit) {
+        return null;
     }
 
     return (target ? target : null);
-}/**
+}
+/**
  * args:
  *  - interval: interval in milliseconds (default: 1000)
  */
@@ -387,7 +394,8 @@ function loader_loops_healing_loop(args)
 
     }, interval);
     Loader.appendIntervalId(id);
-}/**
+}
+/**
  * Selects a target closest to the player. 
  * 
  * args:
@@ -420,7 +428,8 @@ function loader_loops_targeting_loop(args)
         }
     }, interval);
     Loader.appendIntervalId(id);
-}/**
+}
+/**
  * 
  * args:
  *  - interval: interval in milliseconds (default: 1000)
@@ -447,7 +456,8 @@ function loader_loops_move_into_range(args)
         }
     }, interval);
     Loader.appendIntervalId(id);
-}/**
+}
+/**
  * Simple auto- targeting and attacking behaviour.
  */
 class AutoAttackBehaviour
@@ -477,20 +487,15 @@ class AutoAttackBehaviour
             interval: 200
         });
     }
-}class OnClickAttackBehaviour
+}
+class OnClickAttackBehaviour
 {
     engage()
     {
-        let allowed_monsters = localStorage.getItem('loader_allowed_monsters') || null;
-
-        if (allowed_monsters) {
-            allowed_monsters = allowed_monsters.split(',');
-        }
-
         loader_loops_targeting_loop({
             interval: 1000,
             onTargetFoundCallback: loader_base_attack_chain,
-            monsterTypeLimit: allowed_monsters,
+            monsterTypeLimit: 'goo',
             rangeLimit: 200
         });
 
@@ -502,7 +507,8 @@ class AutoAttackBehaviour
             interval: 200
         });
     }
-}/* File: loader
+}
+/* File: loader
  * Description: Loads the game client logic from local or remotes sources. 
  *
  * import("https://cors.taco.open0x20.de/?url=https://raw.githubusercontent.com/open0x20/adventure-land-client/master/combat/in_simple_team.js");
